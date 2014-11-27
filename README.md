@@ -53,6 +53,9 @@ Maybe, I will re-implement this as a compact prefix tree, or I will have it alon
 I will soon upload a less naive implementation, similar to a ternary search tree.
 
 **Perf details**
+Data: 250K words found in /usr/share/dict/words - try it on your machine
+
+Inserted all words at once, and checked for membership at once, and ran performance tests while doing it.
 
 ?:trie dliddell$ python test_trie.py 
 * Max time to add word was 1.145418 sec, Max time to check if word in trie was 0.002709 sec
