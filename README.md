@@ -52,6 +52,20 @@ root.autocomplete(prefix)
 Maybe, I will re-implement this as a compact prefix tree, or I will have it alongside it.
 I will soon upload a less naive implementation, similar to a ternary search tree.
 
+**Perf details**
 
+?:trie dliddell$ python test_trie.py 
+* Max time to add word was 1.145418 sec, Max time to check if word in trie was 0.002709 sec
+* Autocomplete time for prefix "pul" with 174 words was 0.000950 sec
+* Autocomplete time for prefix "coc" with 218 words was 0.001251 sec
+* Autocomplete time for prefix "kra" with 23 words was 0.000128 sec
+* Autocomplete time for prefix "que" with 144 words was 0.000669 sec
+* Autocomplete time for prefix "mon" with 817 words was 0.004332 sec
+* Autocomplete time for prefix "fel" with 90 words was 0.000492 sec
+* Autocomplete time for prefix "klo" with 6 words was 0.000045 sec
+* Autocomplete time for prefix "lio" with 23 words was 0.000133 sec
+* Autocomplete time for prefix "gir" with 49 words was 0.000212 sec
+* Autocomplete time for prefix "abo" with 62 words was 0.000277 sec
 
+On average, search times seems worse than ternary search tree. Maybe worst case is better than average case for one, but not the other.
 
