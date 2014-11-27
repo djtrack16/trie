@@ -7,7 +7,7 @@ class Trie():
 		Space: O(M^n) where M = alphabet size (in our case, 26) and N = height of tree
 		Every node is a dictionary, listing all the possible suffixes of this character so far in the trie
 	'''
-	
+
 	def __init__(self, children={}, endOfWord=False):
 		self.children = children
 		self.endOfWord = endOfWord
@@ -25,7 +25,6 @@ class Trie():
 		# we have to delete up to the latest previous end of word.
 		pass
 
-	# what happens when we call 'in' operator
 	def __contains__(self, word): 
 		node = self
 		for char in word:
@@ -36,27 +35,31 @@ class Trie():
 		# and our stopping place happens to have 'endofword == True'
 		return node.endOfWord
 	
-	''' find the node in the tree where we should begin our autocomplete '''
+	''' 
+	Find the node in the tree where we should begin our autocomplete.
+	Then return all suffixes ending with this word
+	'''
 	def autocomplete(self, prefix):
 		node = self
 		for char in prefix:
 			if not char in node.children:
 				# we return empty list if at any point a character of the prefix is not found in trie traversal
-				print 'Prefix \'%s\' doesn\'t exist in trie' % (prefix)
-				return
+				#print 'Prefix \'%s\' doesn\'t exist in trie' % (prefix)
+				return []
 			node = node.children[char]
-		node.allSuffixes(prefix)
+		words = set([])
+		node.allSuffixes(prefix, words)
+		return words
 
-	''' Generate all possible suffixes of a given prefix
-		E.g. If given the empty string, will print all words in trie
-		If given a prefix that is known to exist in tree, will give all words starting with that prefix (autocomplete feature)
 	'''
-	def allSuffixes(self, suffix):
+	Generate all possible suffixes of a given prefix
+	E.g. If given the empty string, will print all words in trie
+	If given a prefix that is known to exist in tree, will give all words starting with that prefix (autocomplete feature)
+	'''
+	def allSuffixes(self, suffix, words):
 		prefix = self.children
 		if self.endOfWord:
-			print suffix
+			words.add(suffix)
 
 		for char in prefix.keys():
-			prefix[char].allSuffixes(suffix+char)
-			
-
+			prefix[char].allSuffixes(suffix+char, words)
