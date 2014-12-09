@@ -32,11 +32,15 @@ root = Trie()
 
 *Add a word, using:*
 
-root.addWord(string)
+root.add(string)
+
+*Delete a word*
+
+root.delete(word)
 
 *Check if string is in trie*
 
-root.addWord('apple')
+root.add('apple')
 'apple in trie' returns True
 
 *Generates all suffixes starting with this prefix (e.g. will print all words in trie if passed empty string)*
@@ -44,8 +48,6 @@ root.addWord('apple')
 root.autocomplete(prefix)
 
 **TODO:**
-- Add support for deleting words.
-- Run timed tests.
 - Add support for other alphabets besides "normal" characters (e.g. bitwise tries, etc)
 - Lexicographic sorting by character
 
