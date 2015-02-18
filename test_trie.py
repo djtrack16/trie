@@ -2,20 +2,23 @@ from trie import Trie
 import random
 import time
 
-test_prefixes = {
-	'abo': set([]),
-	'klo': set([]),
-	'kra': set([]),
-	'mon': set([]),
-	'fel': set([]),
-	'gir': set([]),
-	'pul': set([]),
-	'lio': set([]),
-	'que': set([]),
-	'coc': set([]),
-}
+prefixes = [
+	'abo',
+	'klo',
+	'kra',
+	'mon',
+	'fel',
+	'gir',
+	'pul',
+	'lio',
+	'que',
+	'coc'
+]
 
-def test_add_and_contains(words, prefixLen):
+def test_add_and_contains(words, prefixLen, test_prefixes):
+	'''
+	Adds words to trie, and verifies word is in trie with __contains__ method
+	'''
 	t = Trie()
 	maxInsert = 0
 	maxContains = 0
@@ -39,20 +42,26 @@ def test_add_and_contains(words, prefixLen):
 
 	return t
 
-def test_autocomplete(t, words):
-	# how do we know the words that the algorithm finds are all the possible words
+def test_autocomplete(t, words, test_prefixes):
+	'''
+	Testing to make sure autocomplete finds all possible words that complete the prefix
+	We use the prefixes from test_prefixes dictionary above as a global.
+	'''
 	for prefix in test_prefixes.keys():
 		# we can check the equality of sets this way or ask if symmetric difference is 0
 		start = time.time()
-		completions = t.autocomplete(prefix)
+		completions = {elem for elem in t.autocomplete(prefix)}
 		assert(completions == test_prefixes[prefix])
 		print 'Autocomplete time for prefix "%s" with %d words was %f sec' % (prefix, len(completions), time.time() - start) 
 
-'''
-Pops arbitrary elements from dictionary and tries to delete them, afterwards exhaustively checking that thiss didn't screw up any other word
-in trie. Adds words back to dictionary and trie for next round of testing. Does this 'trials' number of times
-'''
+
 def test_batch_delete(t, words, trials, toDelete):
+	'''
+	Pops arbitrary elements from dictionary and tries to delete them,
+	afterwards exhaustively checking that thiss didn't screw up any other word
+	in trie. Adds words back to dictionary and trie for next round of testing.
+	Does this 'trials' number of times
+	'''
 	for trial in xrange(trials):
 		prefixes = set([])
 		for x in xrange(toDelete):
@@ -68,22 +77,19 @@ def test_batch_delete(t, words, trials, toDelete):
 			t.add(pre)
 
 
-'''
-Read in a large text file from path using 'cat /usr/share/dict/words > words.txt' (235K words) 
-'''
 def dictionary():
+	'''
+	Read in a large text file from path using 'cat /usr/share/dict/words > words.txt' (235K words) 
+	'''
 	f = open('./words.txt')
 	words = set([])
-	ct = 0
 	for line in f:
 		words.add(line[:-1])
-		ct += 1
-		if ct > 10000:
-			break
 	return words
 
 if __name__ == '__main__':
 	words = dictionary()
-	t = test_add_and_contains(words, 3)
-	#test_autocomplete(t, words)
+	test_prefixes = {prefix: set([]) for prefix in prefixes}
+	t = test_add_and_contains(words, 3, test_prefixes)
+	test_autocomplete(t, words, test_prefixes)
 	test_batch_delete(t, words, 1000, 100)
