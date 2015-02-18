@@ -10,11 +10,10 @@ class Trie():
 		self.endOfWord = endOfWord
 
 	def add(self, word):
-		"""
+		'''
 		Adds a word to the trie.
-		If word already in trie, changes nothing.
-		If given empty string -> does nothing
-		"""
+		If word already in trie or word is empty, does nothing.
+		'''
 		next = self
 		for char in word:
 			if not char in next.children:
@@ -24,16 +23,18 @@ class Trie():
 			next.endOfWord = True
 
 	def delete(self, word):
-		"""
+		'''
 		Delete word from trie.
 		Four cases:
-		1. Word is not in trie -> do nothing
-		2. Word is in trie, but does not contain prefix or suffix of other words in tree,
-		   -> delete entire word
-		3. Word is prefix of another word in trie: set node.endOfWord to False, and we are done
-		4. Another word is prefix of this word in trie: delete leaf nodes bottom-up until the
-		   most recent endofword flag
-		"""
+		1. Word is not in trie
+			-> do nothing
+		2. Word is in trie, but does not contain prefix or suffix of other words in trie
+			-> delete entire word
+		3. Word is prefix of another word in trie
+			-> set node.endOfWord to False
+		4. Another word is prefix of this word in trie
+			-> delete leaf nodes bottom-up until the most recent endofword flag
+		'''
 		node = self
 		# base case
 		if node.endOfWord and not word:
@@ -82,7 +83,7 @@ class Trie():
 		for char in prefix:
 			if not char in node.children:
 				# we return empty list if at any point a character of the prefix is not found in trie traversal
-				#print 'Prefix \'%s\' doesn\'t exist in trie' % (prefix)
+				print 'Prefix \'%s\' doesn\'t exist in trie' % (prefix)
 				return []
 			node = node.children[char]
 		return node.allSuffixes(prefix)
@@ -98,6 +99,6 @@ class Trie():
 			yield prefix
 
 		for char in remaining_letters.keys():
-			prefix = ''.join([prefix, char])
-			for word in remaining_letters[char].allSuffixes(prefix):
+			suffix = ''.join([prefix, char])
+			for word in remaining_letters[char].allSuffixes(suffix):
 				yield word
